@@ -21,6 +21,9 @@ namespace ArdalisRating
                 case PolicyType.Life:
                     return new LifePolicyRater(engine, engine.Logger);
 
+                case PolicyType.Flood:
+                    return new FloodPolicyRater(engine, engine.Logger);
+
                 default:
                     return new UnknownPolicyRater(engine, engine.Logger);
             }
