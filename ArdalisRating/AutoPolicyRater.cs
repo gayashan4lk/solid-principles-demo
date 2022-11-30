@@ -8,13 +8,8 @@ namespace ArdalisRating
 {
     internal class AutoPolicyRater : Rater
     {
-        private readonly RatingEngine engine;
-        private readonly ConsoleLogger logger;
-
         public AutoPolicyRater(RatingEngine engine, ConsoleLogger logger) : base(engine, logger)
         {
-            this.engine = engine;
-            this.logger = logger;
         }
 
         public override void Rate()

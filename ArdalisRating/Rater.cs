@@ -6,21 +6,17 @@ using System.Threading.Tasks;
 
 namespace ArdalisRating
 {
-    internal class Rater
+    public abstract class Rater
     {
-        private readonly RatingEngine engine;
-        private readonly ConsoleLogger logger;
+        protected readonly RatingEngine engine;
+        protected readonly ConsoleLogger logger;
 
         public Rater(RatingEngine engine, ConsoleLogger logger)
         {
             this.engine = engine;
             this.logger = logger;
         }
-
-        public virtual void Rate()
-        {
-            logger.Log("Unknown policy type");
-            engine.Rating = 0m;
-        }
+        
+        public abstract void Rate();
     }
 }

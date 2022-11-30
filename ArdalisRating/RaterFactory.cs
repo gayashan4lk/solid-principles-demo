@@ -22,9 +22,7 @@ namespace ArdalisRating
                     return new LifePolicyRater(engine, engine.Logger);
 
                 default:
-                    // Todo: implement null object pattern
-                    // Logger.Log("Unknown policy type");
-                    return new Rater(engine, engine.Logger);
+                    return new UnknownPolicyRater(engine, engine.Logger);
             }
         }
     }
