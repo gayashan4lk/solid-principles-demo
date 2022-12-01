@@ -13,7 +13,7 @@ namespace ArdalisRating
     {
         public decimal Rating { get; set; }
 
-        public Policy policy { get; set; }
+        public Policy? policy { get; set; }
 
         /// <summary>
         /// Logging - Handles logging.
