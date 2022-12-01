@@ -12,7 +12,9 @@ namespace ArdalisRating
     {
         public Policy GetPolicyFromJsonString(string jsonString)
         {
-            return JsonConvert.DeserializeObject<Policy>(jsonString, new StringEnumConverter());
+            return JsonConvert.DeserializeObject<Policy>(
+                jsonString, 
+                new StringEnumConverter());
         }
     }
 }
