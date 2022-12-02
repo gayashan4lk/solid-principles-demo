@@ -8,25 +8,28 @@ namespace ArdalisRating
 {
     internal class LandPolicyRater : Rater
     {
-        public LandPolicyRater(RatingEngine engine, ConsoleLogger logger) : base(engine, logger)
+        public LandPolicyRater(IRatingUpdater ratingUpdater) : base(ratingUpdater)
         {
         }
 
-        public override void Rate()
+        public override void Rate(Policy policy)
         {
-            logger.Log("Rating LAND policy...");
-            logger.Log("Validating policy.");
-            if (engine.policy.BondAmount == 0 || engine.policy.Valuation == 0)
+            Logger.Log("Rating LAND policy...");
+            Logger.Log("Validating policy.");
+
+            if (policy.BondAmount == 0 || policy.Valuation == 0)
             {
-                logger.Log("Land policy must specify Bond Amount and Valuation.");
+                Logger.Log("Land policy must specify Bond Amount and Valuation.");
                 return;
             }
-            if (engine.policy.BondAmount < 0.8m * engine.policy.Valuation)
+
+            if (policy.BondAmount < 0.8m * policy.Valuation)
             {
-                logger.Log("Insufficient bond amount.");
+                Logger.Log("Insufficient bond amount.");
                 return;
             }
-            engine.Rating = engine.policy.BondAmount * 0.05m;
+
+            ratingUpdater.UpdateRating(policy.BondAmount * 0.05m);
         }
     }
 }

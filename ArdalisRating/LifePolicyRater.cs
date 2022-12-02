@@ -8,43 +8,51 @@ namespace ArdalisRating
 {
     internal class LifePolicyRater : Rater
     {
-        public LifePolicyRater(RatingEngine engine, ConsoleLogger logger) : base(engine, logger)
+        public LifePolicyRater(IRatingUpdater ratingUpdater) : base(ratingUpdater)
         {
         }
 
-        public override void Rate()
+        public override void Rate(Policy policy)
         {
-            logger.Log("Rating LIFE policy...");
-            logger.Log("Validating policy.");
-            if (engine.policy.DateOfBirth == DateTime.MinValue)
+            Logger.Log("Rating LIFE policy...");
+            Logger.Log("Validating policy.");
+
+            if (policy.DateOfBirth == DateTime.MinValue)
             {
-                logger.Log("Life policy must include Date of Birth.");
+                Logger.Log("Life policy must include Date of Birth.");
                 return;
             }
-            if (engine.policy.DateOfBirth < DateTime.Today.AddYears(-100))
+            
+            if (policy.DateOfBirth < DateTime.Today.AddYears(-100))
             {
-                logger.Log("Centenarians are not eligible for coverage.");
+                Logger.Log("Centenarians are not eligible for coverage.");
                 return;
             }
-            if (engine.policy.Amount == 0)
+
+            if (policy.Amount == 0)
             {
-                logger.Log("Life policy must include an Amount.");
+                Logger.Log("Life policy must include an Amount.");
                 return;
             }
-            int age = DateTime.Today.Year - engine.policy.DateOfBirth.Year;
-            if (engine.policy.DateOfBirth.Month == DateTime.Today.Month &&
-                DateTime.Today.Day < engine.policy.DateOfBirth.Day ||
-                DateTime.Today.Month < engine.policy.DateOfBirth.Month)
+
+            int age = DateTime.Today.Year - policy.DateOfBirth.Year;
+
+            if (policy.DateOfBirth.Month == DateTime.Today.Month &&
+                DateTime.Today.Day < policy.DateOfBirth.Day ||
+                DateTime.Today.Month < policy.DateOfBirth.Month)
             {
                 age--;
             }
-            decimal baseRate = engine.policy.Amount * age / 200;
-            if (engine.policy.IsSmoker)
+
+            decimal baseRate = policy.Amount * age / 200;
+
+            if (policy.IsSmoker)
             {
-                engine.Rating = baseRate * 2;
+                ratingUpdater.UpdateRating(baseRate * 2);
                 return;
             }
-            engine.Rating = baseRate;
+
+            ratingUpdater.UpdateRating(baseRate);
         }
     }
 }

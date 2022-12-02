@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace ArdalisRating
 {
-    public class ConsoleLogger : ILogger
+    public interface ILogger
     {
-        public void Log(string message)
-        {
-            Console.WriteLine(message);
-        }
+        void Log(string message);
     }
 }
