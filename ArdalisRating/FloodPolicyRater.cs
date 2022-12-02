@@ -8,42 +8,48 @@ namespace ArdalisRating
 {
     internal class FloodPolicyRater : Rater
     {
-        public FloodPolicyRater(RatingEngine engine, ConsoleLogger logger) : base(engine, logger)
+        public FloodPolicyRater(IRatingUpdater ratingUpdater) : base(ratingUpdater)
         {
         }
 
-        public override void Rate()
+        public override void Rate(Policy policy)
         {
-            logger.Log("Rating FLOOD policy...");
-            logger.Log("Validating policy.");
-            if (engine.policy.BondAmount == 0 || engine.policy.Valuation == 0)
+            Logger.Log("Rating FLOOD policy...");
+            Logger.Log("Validating policy.");
+
+            if (policy.BondAmount == 0 || policy.Valuation == 0)
             {
-                logger.Log("Flood policy must specify Bond Amount and Valuation");
+                Logger.Log("Flood policy must specify Bond Amount and Valuation");
                 return;
             }
-            if (engine.policy.ElevationAboveSeaLevelFeet <= 0)
+
+            if (policy.ElevationAboveSeaLevelFeet <= 0)
             {
-                logger.Log("Flood policy is not available for elevations at or below sea level.");
+                Logger.Log("Flood policy is not available for elevations at or below sea level.");
                 return;
             }
-            if (engine.policy.BondAmount < 0.8m * engine.policy.Valuation)
+
+            if (policy.BondAmount < 0.8m * policy.Valuation)
             {
-                logger.Log("Insufficient bond amount.");
+                Logger.Log("Insufficient bond amount.");
                 return;
             }
+
             decimal multiple = 1.0m;
-            if (engine.policy.ElevationAboveSeaLevelFeet < 100)
+
+            if (policy.ElevationAboveSeaLevelFeet < 100)
             {
                 multiple = 2.0m;
-            } else if (engine.policy.ElevationAboveSeaLevelFeet < 500)
+            } else if (policy.ElevationAboveSeaLevelFeet < 500)
             {
                 multiple = 1.5m;
             }
-            else if (engine.policy.ElevationAboveSeaLevelFeet < 1000)
+            else if (policy.ElevationAboveSeaLevelFeet < 1000)
             {
                 multiple = 1.1m;
             }
-            engine.Rating = engine.policy.BondAmount *  0.05m * multiple;
+
+            ratingUpdater.UpdateRating(policy.BondAmount * 0.05m * multiple);
         }
     }
 }

@@ -8,15 +8,14 @@ namespace ArdalisRating
 {
     public abstract class Rater
     {
-        protected readonly RatingEngine engine;
-        protected readonly ConsoleLogger logger;
+        protected readonly IRatingUpdater ratingUpdater;
+        public ILogger Logger { get; set; } = new ConsoleLogger();
 
-        public Rater(RatingEngine engine, ConsoleLogger logger)
+        public Rater(IRatingUpdater ratingUpdater)
         {
-            this.engine = engine;
-            this.logger = logger;
+            this.ratingUpdater = ratingUpdater;
         }
         
-        public abstract void Rate();
+        public abstract void Rate(Policy policy);
     }
 }
