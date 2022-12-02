@@ -11,14 +11,14 @@ namespace ArdalisRating
         public RatingEngine Engine { get; set; }
 
         private readonly RaterFactory factory;
-        private readonly JsonPolicySerializer serializer;
-        private readonly FilePolicySource source;
+        private readonly IPolicySerializer serializer;
+        private readonly IPolicySource source;
         private readonly ILogger logger;
 
         public DefaultRatingContext(
             RaterFactory factory, 
-            JsonPolicySerializer serializer,
-            FilePolicySource source,
+            IPolicySerializer serializer,
+            IPolicySource source,
             ILogger logger)
         {
             this.factory = factory;

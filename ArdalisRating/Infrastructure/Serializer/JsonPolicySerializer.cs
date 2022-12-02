@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ArdalisRating
 {
-    public class JsonPolicySerializer
+    public class JsonPolicySerializer : IPolicySerializer
     {
         public Policy GetPolicyFromJsonString(string jsonString)
         {
