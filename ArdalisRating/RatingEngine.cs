@@ -11,29 +11,31 @@ namespace ArdalisRating
     /// </summary>
     public class RatingEngine
     {
-        public IRatingContext Context { get; set; } = new DefaultRatingContext();
+        private readonly IRatingContext context;
+
         public decimal Rating { get; set; }
 
-        public RatingEngine()
+        public RatingEngine(IRatingContext context)
         {
-            Context.Engine = this;
+            this.context = context;
         }
-
 
         public void Rate()
         {
-            Context.Log("Starting rate.");
-            Context.Log("Loading policy.");
+            context.Log("Starting rate.");
+            context.Log("Loading policy.");
 
-            string policyJson = Context.LoadPolicyFromFile();
+            string policyJson = context.LoadPolicyFromFile();
 
-            var policy = Context.GetPolicyFromJsonString(policyJson);
+            var policy = context.GetPolicyFromJsonString(policyJson);
             
-            var rater = Context.CreateRaterForPolicy(policy, Context);
+            var rater = context.CreateRaterForPolicy(policy, context);
             
             rater.Rate(policy);
 
-            Context.Log("Rating completed.");
+            context.Log("Rating completed.");
         }
+
+
     }
 }

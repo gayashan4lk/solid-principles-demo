@@ -2,7 +2,6 @@
 
 namespace ArdalisRating
 {
-
     public class Policy
     {
         public PolicyType Type { get; set; }
@@ -31,6 +30,5 @@ namespace ArdalisRating
         #region Flood In Addition To Land
         public int ElevationAboveSeaLevelFeet { get; set; }
         #endregion
-
     }
 }

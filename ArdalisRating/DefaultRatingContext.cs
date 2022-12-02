@@ -10,14 +10,31 @@ namespace ArdalisRating
     {
         public RatingEngine Engine { get; set; }
 
+        private readonly RaterFactory factory;
+        private readonly JsonPolicySerializer serializer;
+        private readonly FilePolicySource source;
+        private readonly ILogger logger;
+
+        public DefaultRatingContext(
+            RaterFactory factory, 
+            JsonPolicySerializer serializer,
+            FilePolicySource source,
+            ILogger logger)
+        {
+            this.factory = factory;
+            this.serializer = serializer;
+            this.source = source;
+            this.logger = logger;
+        }
+
         public Rater CreateRaterForPolicy(Policy policy, IRatingContext context)
         {
-            return new RaterFactory().Create(policy, context);
+            return factory.Create(policy, this);
         }
 
         public Policy GetPolicyFromJsonString(string jsonString)
         {
-            return new JsonPolicySerializer().GetPolicyFromJsonString(jsonString);
+            return serializer.GetPolicyFromJsonString(jsonString);
         }
 
         public Policy GetPolicyFromXmlString(string xmlString)
@@ -27,7 +44,7 @@ namespace ArdalisRating
 
         public string LoadPolicyFromFile()
         {
-            return new FilePolicySource().GetDataFromJsonSource();
+            return source.GetDataFromJsonSource();
         }
 
         public string LoadPolicyFromURI(string uri)
@@ -37,7 +54,7 @@ namespace ArdalisRating
 
         public void Log(string message)
         {
-            new ConsoleLogger().Log(message);
+            logger.Log(message);
         }
     }
 }
