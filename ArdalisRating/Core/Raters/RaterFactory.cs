@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace ArdalisRating
 {
-    internal class RaterFactory
+    public class RaterFactory
     {
-        public Rater Create(Policy policy, RatingEngine engine)
+        public Rater Create(Policy policy)
         {
             try
             {
                 return (Rater)Activator.CreateInstance(
                     Type.GetType($"ArdalisRating.{policy.Type}PolicyRater"), 
-                    new object[] { new RatingUpdater(engine) });
+                    new object[] {});
             }
             catch
             {
-                return new UnknownPolicyRater(new RatingUpdater(engine));
+                return new UnknownPolicyRater();
             }
         }
     }

@@ -11,29 +11,39 @@ namespace ArdalisRating
     /// </summary>
     public class RatingEngine
     {
-        private readonly IRatingContext context;
+        private readonly ILogger logger;
+        private readonly IPolicySource policySource;
+        private readonly IPolicySerializer serializer;
+        private readonly RaterFactory raterFactory;
 
         public decimal Rating { get; set; }
 
-        public RatingEngine(IRatingContext context)
+        public RatingEngine(
+            ILogger logger,
+            IPolicySource policySource,
+            IPolicySerializer serializer,
+            RaterFactory raterFactory)
         {
-            this.context = context;
+            this.logger = logger;
+            this.policySource = policySource;
+            this.serializer = serializer;
+            this.raterFactory = raterFactory;
         }
 
         public void Rate()
         {
-            context.Log("Starting rate.");
-            context.Log("Loading policy.");
+            logger.Log("Starting rate.");
+            logger.Log("Loading policy.");
 
-            string policyJson = context.LoadPolicyFromFile();
+            string policyData = policySource.GetDataFromJsonSource();
 
-            var policy = context.GetPolicyFromJsonString(policyJson);
+            var policy = serializer.GetPolicyFromJsonString(policyData);
             
-            var rater = context.CreateRaterForPolicy(policy, this);
+            var rater = raterFactory.Create(policy);
             
-            rater.Rate(policy);
+            Rating = rater.Rate(policy);
 
-            context.Log("Rating completed.");
+            logger.Log("Rating completed.");
         }
     }
 }
