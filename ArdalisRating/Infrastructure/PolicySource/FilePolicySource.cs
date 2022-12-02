@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ArdalisRating
 {
-    public class FilePolicySource
+    public class FilePolicySource : IPolicySource
     {
         public string GetDataFromJsonSource()
         {

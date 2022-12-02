@@ -8,11 +8,7 @@ namespace ArdalisRating
 {
     internal class FloodPolicyRater : Rater
     {
-        public FloodPolicyRater(IRatingUpdater ratingUpdater) : base(ratingUpdater)
-        {
-        }
-
-        public override void Rate(Policy policy)
+        public override decimal Rate(Policy policy)
         {
             Logger.Log("Rating FLOOD policy...");
             Logger.Log("Validating policy.");
@@ -20,19 +16,19 @@ namespace ArdalisRating
             if (policy.BondAmount == 0 || policy.Valuation == 0)
             {
                 Logger.Log("Flood policy must specify Bond Amount and Valuation");
-                return;
+                return 0m;
             }
 
             if (policy.ElevationAboveSeaLevelFeet <= 0)
             {
                 Logger.Log("Flood policy is not available for elevations at or below sea level.");
-                return;
+                return 0m;
             }
 
             if (policy.BondAmount < 0.8m * policy.Valuation)
             {
                 Logger.Log("Insufficient bond amount.");
-                return;
+                return 0m;
             }
 
             decimal multiple = 1.0m;
@@ -49,7 +45,7 @@ namespace ArdalisRating
                 multiple = 1.1m;
             }
 
-            ratingUpdater.UpdateRating(policy.BondAmount * 0.05m * multiple);
+            return policy.BondAmount * 0.05m * multiple;
         }
     }
 }
