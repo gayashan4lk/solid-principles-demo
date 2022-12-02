@@ -27,9 +27,9 @@ namespace ArdalisRating
             this.logger = logger;
         }
 
-        public Rater CreateRaterForPolicy(Policy policy, IRatingContext context)
+        public Rater CreateRaterForPolicy(Policy policy, RatingEngine engine)
         {
-            return factory.Create(policy, this);
+            return factory.Create(policy, engine);
         }
 
         public Policy GetPolicyFromJsonString(string jsonString)

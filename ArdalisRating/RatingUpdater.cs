@@ -17,7 +17,7 @@ namespace ArdalisRating
 
         public void UpdateRating(decimal rating)
         {
-            this.engine.Rating = rating;
+            engine.Rating = rating;
         }
     }
 }

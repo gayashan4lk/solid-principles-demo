@@ -29,13 +29,11 @@ namespace ArdalisRating
 
             var policy = context.GetPolicyFromJsonString(policyJson);
             
-            var rater = context.CreateRaterForPolicy(policy, context);
+            var rater = context.CreateRaterForPolicy(policy, this);
             
             rater.Rate(policy);
 
             context.Log("Rating completed.");
         }
-
-
     }
 }
