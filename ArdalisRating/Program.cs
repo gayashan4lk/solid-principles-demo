@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ArdalisRating.Core;
+using ArdalisRating.Infrastructure;
+using System;
 
 namespace ArdalisRating
 {
